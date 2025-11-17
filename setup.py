@@ -72,7 +72,7 @@ if __name__ == "__main__":
     try:
         setup(
             use_scm_version={"version_scheme": "no-guess-dev"},
-            ext_modules=[CMakeExtension("iranges")],
+            ext_modules=[CMakeExtension("biostrings")],
             cmdclass={"build_ext": build_ext},
         )
     except:  # noqa

@@ -1,10 +1,29 @@
+from copy import deepcopy
+from typing import List, Optional, Union
+from warnings import warn
+
+import biocutils as ut
 import numpy as np
-from biocpy.iranges import IRanges
+from iranges import IRanges
 
-from .DnaString import _DNA_VALIDATOR, DnaString
+from .dnastring import DNAString
+from .utils import _sanitize_metadata
+
+try:
+    from . import lib_biostrings
+
+    _CPP_OPS_ENABLED = True
+except ImportError:
+    _CPP_OPS_ENABLED = False
+    from .dnastring import _DNA_VALIDATOR
 
 
-class DnaStringset:
+__author__ = "Jayaram Kancherla"
+__copyright__ = "Jayaram Kancherla"
+__license__ = "MIT"
+
+
+class DNAStringSet:
     """A collection of DNA sequences, similar to Bioconductor's DNAStringSet.
 
     This class follows the "pool and ranges" model for high memory
@@ -15,12 +34,14 @@ class DnaStringset:
 
     def __init__(
         self,
-        sequences: list[str],
-        names: list[str] = None,
+        sequences: Optional[List[str]] = None,
+        names: Optional[Union[List[str], ut.Names]] = None,
         _pool: bytes = None,
         _ranges: IRanges = None,
+        metadata: Optional[dict] = None,
+        validate: bool = True,
     ):
-        """Create a DnaStringset.
+        """Create a DNAStringSet.
 
         Args:
             sequences:
@@ -35,116 +56,187 @@ class DnaStringset:
 
             _ranges (internal):
                 Used by methods like __getitem__.
+
+            metadata:
+                Additional metadata. If None, defaults to an empty dictionary.
+
+            validate:
+                Whether to validate the arguments, internal use only.
         """
         if _pool is not None and _ranges is not None:
-            # Internal constructor: just assign the shared pool and new ranges
             self._pool = _pool
             self._ranges = _ranges
-        elif sequences is not None:
-            # Public constructor: build the pool and ranges
-            pool_parts = []
-            widths = np.zeros(len(sequences), dtype=np.int32)
 
-            for i, seq_str in enumerate(sequences):
-                if not _DNA_VALIDATOR.match(seq_str):
-                    raise ValueError(f"Sequence at index {i} contains non-DNA characters.")
+        elif sequences is not None and len(sequences) > 0:
+            if validate:
+                for i, seq_str in enumerate(sequences):
+                    if not _DNA_VALIDATOR.match(seq_str):
+                        raise ValueError(f"Sequence at index {i} contains non-DNA characters.")
 
-                seq_bytes = seq_str.upper().encode("ascii")
-                pool_parts.append(seq_bytes)
-                widths[i] = len(seq_bytes)
+            if _CPP_OPS_ENABLED:
+                try:
+                    self._pool, starts, widths = lib_biostrings.create_DNAStringSet_pool(sequences)
+                    self._ranges = IRanges(starts=starts, widths=widths, names=names)
+                except Exception as e:
+                    raise e
+            else:
+                pool_parts = []
+                widths = np.zeros(len(sequences), dtype=np.int32)
 
-            self._pool = b"".join(pool_parts)
-            starts = np.concatenate((np.array([0], dtype=np.int32), np.cumsum(widths[:-1])))
+                for i, seq_str in enumerate(sequences):
+                    seq_bytes = seq_str.upper().encode("ascii")
+                    pool_parts.append(seq_bytes)
+                    widths[i] = len(seq_bytes)
 
-            self._ranges = IRanges(starts=starts, widths=widths, names=names)
+                self._pool = b"".join(pool_parts)
+                starts = np.concatenate((np.array([0], dtype=np.int32), np.cumsum(widths[:-1])))
+
+                self._ranges = IRanges(start=starts, width=widths, names=names)
+
         else:
             # Empty set
             self._pool = b""
-            self._ranges = IRanges([], [], names=[])
+            self._ranges = IRanges(np.array([], dtype=np.int32), np.array([], dtype=np.int32), names=[])
 
-    def __len__(self) -> int:
-        """Return the number of sequences in the set."""
-        return len(self._ranges)
+        self._metadata = _sanitize_metadata(metadata)
 
-    def width(self) -> np.ndarray:
-        """Return an array of lengths for all sequences."""
-        return self._ranges.width
+    #################
+    #### Copying ####
+    #################
 
-    @property
-    def names(self) -> list[str]:
-        """Return the names of the sequences."""
-        return self._ranges.names
-
-    @names.setter
-    def names(self, new_names: list[str]):
-        """Set the names of the sequences."""
-        self._ranges.names = new_names
-
-    def __getitem__(self, key: Union[int, slice, list[int], np.ndarray]) -> Union[DnaString, "DnaStringset"]:
-        """
-        Extract one or more sequences.
-
-        - If key is int: Returns a DnaString object (a copy).
-        - If key is slice or list: Returns a new DnaStringset (a view).
-        """
-        if isinstance(key, int):
-            if key < 0:
-                key += len(self)
-
-            r = self._ranges.ranges[key]
-            start = r["start"]
-            end = start + r["width"]
-
-            # Return a DnaString, which is a *copy* of the bytes
-            return DnaString(self._pool[start:end])
-
-        elif isinstance(key, (slice, list, np.ndarray)):
-            # New IRanges object (subsetted)
-            new_ranges = self._ranges[key]
-
-            # Return a new DnaStringset *view*
-            # It shares the *same* self._pool, but has new ranges.
-            # This is the memory-efficient design.
-            return DnaStringset(sequences=None, _pool=self._pool, _ranges=new_ranges)
+    def _define_output(self, in_place):
+        if in_place:
+            return self
         else:
-            raise TypeError(f"Index must be int, slice, or list, not {type(key)}")
+            return self.__copy__()
 
-    def to_list(self) -> list[str]:
-        """
-        Convert the set to a list of Python strings.
+    def __copy__(self) -> "DNAStringSet":
+        """Shallow copy of the object.
 
-        [See R: new_CHARACTER_from_XStringSet in XStringSet_class.c]
-        This is a candidate for C++ optimization.
+        Returns:
+            Same type as the caller, a shallow copy of this object.
         """
-        output = []
-        for r in self._ranges.ranges:
-            start = r["start"]
-            end = start + r["width"]
-            output.append(self._pool[start:end].decode("ascii"))
+        return type(self)(
+            _pool=self._pool,
+            _ranges=self._ranges,
+            metadata=self._metadata,
+            validate=False,
+        )
+
+    def __deepcopy__(self, memo) -> "DNAStringSet":
+        """Deep copy of the object.
+
+        Args:
+            memo: Passed to internal :py:meth:`~deepcopy` calls.
+
+        Returns:
+            Same type as the caller, a deep copy of this object.
+        """
+        return type(self)(
+            _pool=deepcopy(self._pool, memo),
+            _ranges=deepcopy(self._ranges, memo),
+            metadata=deepcopy(self._metadata, memo),
+            validate=False,
+        )
+
+    ########################
+    #### Getter/setters ####
+    ########################
+
+    def get_metadata(self) -> dict:
+        """Get additional metadata.
+
+        Returns:
+            Dictionary containing additional metadata.
+        """
+        return self._metadata
+
+    def set_metadata(self, metadata: Optional[dict], in_place: bool = False) -> "DNAStringSet":
+        """Set or replace metadata.
+
+        Args:
+            metadata:
+                Additional metadata.
+
+            in_place:
+                Whether to modify the object in place.
+
+        Returns:
+            If ``in_place = False``, a new ``DNAStringSet`` is returned with the
+            modified metadata. Otherwise, the current object is directly
+            modified and a reference to it is returned.
+        """
+        output = self._define_output(in_place)
+        output._metadata = _sanitize_metadata(metadata)
         return output
 
-    def unlist(self) -> DnaString:
+    @property
+    def metadata(self) -> dict:
+        """Get additional metadata.
+
+        Returns:
+            Dictionary containing additional metadata.
         """
-        Concatenate all sequences in the set into one DnaString.
+        return self.get_metadata()
 
-        [See R: XStringSet_unlist in XStringSet_class.c]
+    @metadata.setter
+    def metadata(self, metadata: Optional[dict]):
+        """Set or replace metadata (in-place operation).
+
+        Args:
+            metadata:
+                Additional metadata.
         """
-        # This is fast if the pool is already concatenated, but
-        # if the ranges are subsetted, we need to build it.
-        if len(self) == 0:
-            return DnaString("")
+        warn(
+            "Setting property 'metadata'is an in-place operation, use 'set_metadata' instead",
+            UserWarning,
+        )
+        self.set_metadata(metadata, in_place=True)
 
-        # Check if the ranges cover the pool contiguously
-        first_start = self._ranges.ranges[0]["start"]
-        last_r = self._ranges.ranges[-1]
-        last_end = last_r["start"] + last_r["width"]
+    def get_names(self) -> Optional[ut.Names]:
+        """Get range names.
 
-        if last_end - first_start == np.sum(self.width()):
-            # Simple case: just a view on the pool
-            return DnaString(self._pool[first_start:last_end])
-        else:
-            # Complex case: ranges are subsetted, must join
-            return DnaString(b"".join(self.to_list()))
+        Returns:
+            List containing the names for all ranges, or None if no names are
+            present.
+        """
+        return self._ranges.get_names()
+
+    def set_names(self, names: Optional[List[str]], in_place: bool = False) -> "DNAStringSet":
+        """
+        Args:
+            names:
+                Sequence of names or None, see the constructor for details.
+
+            in_place:
+                Whether to modify the object in place.
+
+        Returns:
+            If ``in_place = False``, a new ``DNAStringSet`` is returned with the
+            modified names. Otherwise, the current object is directly modified
+            and a reference to it is returned.
+        """
+        output = self._define_output(in_place)
+        output._ranges.set_names(names, in_place=in_place)
+        return output
+
+    @property
+    def names(self) -> Optional[ut.Names]:
+        """Return the names of the sequences."""
+        return self._ranges.get_names()
+
+    @names.setter
+    def names(self, new_names: List[str]):
+        """Set the names of the sequences."""
+        warn(
+            "Setting property 'names' is an in-place operation, use 'set_names' instead",
+            UserWarning,
+        )
+        self.set_names(names=new_names, in_place=True)
+
+    ##################
+    #### printing ####
+    ##################
 
     def __repr__(self) -> str:
         """Return a compact representation."""
@@ -156,25 +248,28 @@ class DnaStringset:
 
         header = f"<{cls_name} of length {n}>"
 
-        # Show logic from R
         max_show = 10
         half_show = 5
 
         lines = []
         widths = self.width()
         names = self.names if self.names else [""] * n
-        max_width_str = len(str(np.max(widths)))
+        max_width_str = len(str(np.max(widths))) if len(widths) > 0 else 0
 
         def format_line(i):
             w = widths[i]
-            seq = self[i]  # This gets a DnaString
+            # TODO: Avoid creating DnaString object just for repr
+            # Access bytes directly
+            start = self._ranges.start[i]
+            end = start + w
+            seq_bytes = self._pool[start:end]
 
             if w > 18:
-                snippet = str(seq[:7]) + "..." + str(seq[-8:])
+                snippet = seq_bytes[:7].decode("ascii") + "..." + seq_bytes[-8:].decode("ascii")
             else:
-                snippet = str(seq)
+                snippet = seq_bytes.decode("ascii")
 
-            name_str = names[i]
+            name_str = names[i] if names[i] else ""
             if len(name_str) > 10:
                 name_str = name_str[:7] + "..."
 
@@ -191,3 +286,73 @@ class DnaStringset:
                 lines.append(format_line(i))
 
         return header + "\n" + "\n".join(lines)
+
+    ##################
+    #### the rest ####
+    ##################
+
+    def __len__(self) -> int:
+        """Return the number of sequences in the set."""
+        return len(self._ranges)
+
+    def get_width(self) -> np.ndarray:
+        """Return an array of lengths for all sequences."""
+        return self._ranges.get_width()
+
+    def width(self) -> np.ndarray:
+        """Alias to :py:meth:`~.get_width`."""
+        return self.get_width()
+
+    def __getitem__(self, key: Union[int, slice, List[int], np.ndarray]) -> Union[DNAString, "DNAStringSet"]:
+        """Extract one or more sequences.
+
+        Args:
+            key:
+                - If key is int: Returns a DNAString object (a copy).
+                - If key is slice or list: Returns a new DNAStringSet (a view).
+
+        Returns:
+            A DNAString or DNAStringSet object representing the slice.
+        """
+        if isinstance(key, int):
+            if key < 0:
+                key += len(self)
+
+            r = self._ranges[key]
+            start = r._start[0]
+            end = start + r._width[0]
+
+            return DNAString(self._pool[start:end])
+
+        elif isinstance(key, (slice, list, np.ndarray)):
+            new_ranges = self._ranges[key]
+            return DNAStringSet(sequences=None, _pool=self._pool, _ranges=new_ranges)
+        else:
+            raise TypeError(f"Index must be int, slice, or list, not {type(key)}")
+
+    def to_list(self) -> List[str]:
+        """Convert the set to a list of Python strings."""
+        output = []
+        for i in range(len(self._ranges)):
+            start = self._ranges._start[i]
+            width = self._ranges._width[i]
+            end = start + width
+            output.append(self._pool[start:end].decode("ascii"))
+        return output
+
+    def unlist(self) -> DNAString:
+        """Concatenate all sequences in the set into one DNAString."""
+        if len(self) == 0:
+            return DNAString("")
+
+        first_start = self._ranges._start[0]
+        last_start = self._ranges._start[-1]
+        last_width = self._ranges._width[-1]
+        last_end = last_start + last_width
+
+        total_width = np.sum(self.width())
+
+        if last_end - first_start == total_width:
+            return DNAString(self._pool[first_start:last_end])
+        else:
+            return DNAString(b"".join([x.encode("ascii") for x in self.to_list()]))

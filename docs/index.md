@@ -1,18 +1,14 @@
 # biostrings
 
-representations for dna strings
+Efficient manipulation of genomic sequences in Python, inspired by the design of Bioconductor's [Biostrings](https://bioconductor.org/packages/Biostrings) package.
 
+## Install
 
-## Note
+To get started, install the package from [PyPI](https://pypi.org/project/biostrings/)
 
-> This is the main page of your project's [Sphinx] documentation. It is
-> formatted in [Markdown]. Add additional pages by creating md-files in
-> `docs` or rst-files (formatted in [reStructuredText]) and adding links to
-> them in the `Contents` section below.
->
-> Please check [Sphinx] and [MyST] for more information
-> about how to document your project and how to configure your preferences.
-
+```bash
+pip install biostrings
+```
 
 ## Contents
 
@@ -29,9 +25,9 @@ Module Reference <api/modules>
 
 ## Indices and tables
 
-* {ref}`genindex`
-* {ref}`modindex`
-* {ref}`search`
+- {ref}`genindex`
+- {ref}`modindex`
+- {ref}`search`
 
 [Sphinx]: http://www.sphinx-doc.org/
 [Markdown]: https://daringfireball.net/projects/markdown/

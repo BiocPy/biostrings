@@ -1,5 +1,9 @@
 import re
-from typing import Union
+from copy import deepcopy
+from typing import Optional, Union
+from warnings import warn
+
+from .utils import _sanitize_metadata
 
 # From R's DNA_ALPHABET
 # We'll use the standard IUPAC DNA codes + gap
@@ -13,35 +17,146 @@ _DNA_VALIDATOR = re.compile(f"^[{''.join(DNA_IUPAC_LETTERS)}]*$", re.IGNORECASE)
 _DNA_COMPLEMENT_TABLE = str.maketrans("ACGTRYSWKMBDHVN-", "TGCAYRSWMKVHDBN-")
 _DNA_COMPLEMENT_TABLE_BYTES = bytes.maketrans(b"ACGTRYSWKMBDHVN-acgtryswkmbdhvn-", b"TGCAYRSWMKVHDBN-TGCAYRSWMKVHDBN-")
 
+__author__ = "Jayaram Kancherla"
+__copyright__ = "Jayaram Kancherla"
+__license__ = "MIT"
 
-class DnaString:
+
+class DNAString:
     """A string container for a DNA sequence, similar to Bioconductor's DNAString.
 
     This class stores the sequence internally as bytes, enforcing the
     DNA alphabet.
     """
 
-    def __init__(self, sequence: Union[str, bytes]):
-        """Create a DnaString.
+    def __init__(self, sequence: Union[str, bytes], metadata: Optional[dict] = None, validate: bool = True):
+        """Create a DNAString.
 
         Args:
             sequence:
                 A string or bytes object representing a DNA sequence.
+
+            metadata:
+                Additional metadata. If None, defaults to an empty dictionary.
+
+            validate:
+                Whether to validate the arguments, internal use only.
         """
         if isinstance(sequence, str):
-            # Validate string input
-            if not _DNA_VALIDATOR.match(sequence):
-                raise ValueError("Input string contains non-DNA characters.")
             self._data = sequence.upper().encode("ascii")
         elif isinstance(sequence, bytes):
-            # Assume bytes are already valid (e.g., from internal slicing)
             self._data = sequence
         else:
-            raise TypeError(f"Cannot initialize DnaString with type {type(sequence)}")
+            raise TypeError(f"Cannot initialize DNAString with type {type(sequence)}")
 
-    def __len__(self) -> int:
-        """Return the length of the sequence."""
-        return len(self._data)
+        self._metadata = _sanitize_metadata(metadata)
+
+        if validate:
+            if not _DNA_VALIDATOR.match(self._data.decode("ascii")):
+                raise ValueError("Input string contains non-DNA characters.")
+
+    #################
+    #### Copying ####
+    #################
+
+    def _define_output(self, in_place):
+        if in_place:
+            return self
+        else:
+            return self.__copy__()
+
+    def __copy__(self) -> "DNAString":
+        """Shallow copy of the object.
+
+        Returns:
+            Same type as the caller, a shallow copy of this object.
+        """
+        return type(self)(
+            sequence=str(self),
+            metadata=self._metadata,
+            validate=False,
+        )
+
+    def __deepcopy__(self, memo) -> "DNAString":
+        """Deep copy of the object.
+
+        Args:
+            memo: Passed to internal :py:meth:`~deepcopy` calls.
+
+        Returns:
+            Same type as the caller, a deep copy of this object.
+        """
+        return type(self)(
+            sequence=deepcopy(str(self), memo),
+            metadata=deepcopy(self._metadata, memo),
+            validate=False,
+        )
+
+    ########################
+    #### Getter/setters ####
+    ########################
+
+    def get_metadata(self) -> dict:
+        """Get additional metadata.
+
+        Returns:
+            Dictionary containing additional metadata.
+        """
+        return self._metadata
+
+    def set_metadata(self, metadata: Optional[dict], in_place: bool = False) -> "DNAString":
+        """Set or replace metadata.
+
+        Args:
+            metadata:
+                Additional metadata.
+
+            in_place:
+                Whether to modify the object in place.
+
+        Returns:
+            If ``in_place = False``, a new ``DNAString`` is returned with the
+            modified metadata. Otherwise, the current object is directly
+            modified and a reference to it is returned.
+        """
+        output = self._define_output(in_place)
+        output._metadata = _sanitize_metadata(metadata)
+        return output
+
+    @property
+    def metadata(self) -> dict:
+        """Get additional metadata.
+
+        Returns:
+            Dictionary containing additional metadata.
+        """
+        return self.get_metadata()
+
+    @metadata.setter
+    def metadata(self, metadata: Optional[dict]):
+        """Set or replace metadata (in-place operation).
+
+        Args:
+            metadata:
+                Additional metadata.
+        """
+        warn(
+            "Setting property 'metadata'is an in-place operation, use 'set_metadata' instead",
+            UserWarning,
+        )
+        self.set_metadata(metadata, in_place=True)
+
+    def get_sequence(self) -> str:
+        """Get the sequence.
+
+        Returns:
+            The sequence string.
+        """
+        return self._data.decode("ascii")
+
+    ##################
+    #### printing ####
+    ##################
 
     def __str__(self) -> str:
         """Return the sequence as a Python string."""
@@ -54,17 +169,29 @@ class DnaString:
             snippet = str(self[:10]) + "..." + str(self[-10:])
         else:
             snippet = str(self)
-        return f"DnaString(length={length}, sequence='{snippet}')"
+        return f"DNAString(length={length}, sequence='{snippet}')"
+
+    #####################
+    #### comparators ####
+    #####################
+
+    def __len__(self) -> int:
+        """Return the length of the sequence."""
+        return len(self._data)
 
     def __eq__(self, other) -> bool:
-        """Check for equality with another DnaString or str."""
-        if isinstance(other, DnaString):
+        """Check for equality with another DNAString or str."""
+        if isinstance(other, DNAString):
             return self._data == other._data
         if isinstance(other, str):
             return str(self) == other.upper()
         return False
 
-    def __getitem__(self, key: Union[int, slice]) -> "DnaString":
+    #########################
+    #### Getitem/setitem ####
+    #########################
+
+    def __getitem__(self, key: Union[int, slice]) -> "DNAString":
         """Extract a subsequence (slicing).
 
         Args:
@@ -72,25 +199,29 @@ class DnaString:
                 An integer or slice.
 
         Returns:
-            A new DnaString object representing the subsequence.
+            A new DNAString object representing the subsequence.
         """
         if isinstance(key, int):
             if key < 0:
                 key += len(self)
-            return DnaString(self._data[key : key + 1])
+            return DNAString(self._data[key : key + 1])
         elif isinstance(key, slice):
-            return DnaString(self._data[key])
+            return DNAString(self._data[key])
         else:
-            raise TypeError(f"Index must be int or slice, not {type(key)}")
+            raise TypeError(f"Index must be int or slice, not {type(key)}.")
 
-    def reverse_complement(self) -> "DnaString":
+    #################
+    #### methods ####
+    #################
+
+    def reverse_complement(self) -> "DNAString":
         """Compute the reverse complement of the sequence.
 
         Returns:
-            A new DnaString with the reverse complement.
+            A new DNAString with the reverse complement.
         """
         complemented = self._data.translate(_DNA_COMPLEMENT_TABLE_BYTES)
-        return DnaString(complemented[::-1])
+        return DNAString(complemented[::-1])
 
     def to_bytes(self) -> bytes:
         """Get the underlying byte representation."""
