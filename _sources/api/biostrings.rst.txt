@@ -1,0 +1,45 @@
+biostrings package
+==================
+
+Submodules
+----------
+
+biostrings.dnastring module
+---------------------------
+
+.. automodule:: biostrings.dnastring
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+biostrings.dnastringset module
+------------------------------
+
+.. automodule:: biostrings.dnastringset
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+biostrings.lib\_biostrings module
+---------------------------------
+
+.. automodule:: biostrings.lib_biostrings
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+biostrings.utils module
+-----------------------
+
+.. automodule:: biostrings.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: biostrings
+   :members:
+   :show-inheritance:
+   :undoc-members:
