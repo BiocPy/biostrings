@@ -19,7 +19,7 @@ py::tuple create_dnastringset_pool(py::list py_seqs) {
 
     int32_t* starts_ptr = np_starts.mutable_data();
     int32_t* widths_ptr = np_widths.mutable_data();
-    
+
     std::stringstream pool_stream;
     int32_t current_start = 0;
     const std::string valid_chars = "ACGTRYSWKMBDHVN-";
@@ -38,11 +38,11 @@ py::tuple create_dnastringset_pool(py::list py_seqs) {
                 );
             }
         }
-        
+
         pool_stream.write(s.c_str(), current_width);
         current_start += current_width;
     }
-    
+
     py::bytes pool = py::bytes(pool_stream.str());
     return py::make_tuple(pool, np_starts, np_widths);
 }
