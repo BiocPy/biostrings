@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from copy import deepcopy
-from typing import List, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 from warnings import warn
 
 import biocutils as ut
@@ -23,7 +25,7 @@ __copyright__ = "Jayaram Kancherla"
 __license__ = "MIT"
 
 
-class DNAStringSet:
+class DNAStringSet(ut.BiocObject):
     """A collection of DNA sequences, similar to Bioconductor's DNAStringSet.
 
     This class follows the "pool and ranges" model for high memory
@@ -36,10 +38,10 @@ class DNAStringSet:
         self,
         sequences: Optional[List[str]] = None,
         names: Optional[Union[List[str], ut.Names]] = None,
-        _pool: bytes = None,
-        _ranges: IRanges = None,
-        metadata: Optional[dict] = None,
-        validate: bool = True,
+        _pool: Optional[bytes] = None,
+        _ranges: Optional[IRanges] = None,
+        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
+        _validate: bool = True,
     ):
         """Create a DNAStringSet.
 
@@ -63,12 +65,14 @@ class DNAStringSet:
             validate:
                 Whether to validate the arguments, internal use only.
         """
+        super().__init__(metadata=metadata, _validate=_validate)
+
         if _pool is not None and _ranges is not None:
             self._pool = _pool
             self._ranges = _ranges
 
         elif sequences is not None and len(sequences) > 0:
-            if validate:
+            if _validate:
                 for i, seq_str in enumerate(sequences):
                     if not _DNA_VALIDATOR.match(seq_str):
                         raise ValueError(f"Sequence at index {i} contains non-DNA characters.")
@@ -104,13 +108,7 @@ class DNAStringSet:
     #### Copying ####
     #################
 
-    def _define_output(self, in_place):
-        if in_place:
-            return self
-        else:
-            return self.__copy__()
-
-    def __copy__(self) -> "DNAStringSet":
+    def __copy__(self) -> DNAStringSet:
         """Shallow copy of the object.
 
         Returns:
@@ -120,10 +118,10 @@ class DNAStringSet:
             _pool=self._pool,
             _ranges=self._ranges,
             metadata=self._metadata,
-            validate=False,
+            _validate=False,
         )
 
-    def __deepcopy__(self, memo) -> "DNAStringSet":
+    def __deepcopy__(self, memo) -> DNAStringSet:
         """Deep copy of the object.
 
         Args:
@@ -136,62 +134,12 @@ class DNAStringSet:
             _pool=deepcopy(self._pool, memo),
             _ranges=deepcopy(self._ranges, memo),
             metadata=deepcopy(self._metadata, memo),
-            validate=False,
+            _validate=False,
         )
 
     ########################
     #### Getter/setters ####
     ########################
-
-    def get_metadata(self) -> dict:
-        """Get additional metadata.
-
-        Returns:
-            Dictionary containing additional metadata.
-        """
-        return self._metadata
-
-    def set_metadata(self, metadata: Optional[dict], in_place: bool = False) -> "DNAStringSet":
-        """Set or replace metadata.
-
-        Args:
-            metadata:
-                Additional metadata.
-
-            in_place:
-                Whether to modify the object in place.
-
-        Returns:
-            If ``in_place = False``, a new ``DNAStringSet`` is returned with the
-            modified metadata. Otherwise, the current object is directly
-            modified and a reference to it is returned.
-        """
-        output = self._define_output(in_place)
-        output._metadata = _sanitize_metadata(metadata)
-        return output
-
-    @property
-    def metadata(self) -> dict:
-        """Get additional metadata.
-
-        Returns:
-            Dictionary containing additional metadata.
-        """
-        return self.get_metadata()
-
-    @metadata.setter
-    def metadata(self, metadata: Optional[dict]):
-        """Set or replace metadata (in-place operation).
-
-        Args:
-            metadata:
-                Additional metadata.
-        """
-        warn(
-            "Setting property 'metadata'is an in-place operation, use 'set_metadata' instead",
-            UserWarning,
-        )
-        self.set_metadata(metadata, in_place=True)
 
     def get_names(self) -> Optional[ut.Names]:
         """Get range names.
@@ -202,7 +150,7 @@ class DNAStringSet:
         """
         return self._ranges.get_names()
 
-    def set_names(self, names: Optional[List[str]], in_place: bool = False) -> "DNAStringSet":
+    def set_names(self, names: Optional[List[str]], in_place: bool = False) -> DNAStringSet:
         """
         Args:
             names:
@@ -303,7 +251,7 @@ class DNAStringSet:
         """Alias to :py:meth:`~.get_width`."""
         return self.get_width()
 
-    def __getitem__(self, key: Union[int, slice, List[int], np.ndarray]) -> Union[DNAString, "DNAStringSet"]:
+    def __getitem__(self, key: Union[int, slice, List[int], np.ndarray]) -> Union[DNAString, DNAStringSet]:
         """Extract one or more sequences.
 
         Args:

@@ -1,7 +1,10 @@
+from __future__ import annotations
+
 import re
 from copy import deepcopy
-from typing import Optional, Union
-from warnings import warn
+from typing import Any, Dict, Optional, Union
+
+import biocutils as ut
 
 from .utils import _sanitize_metadata
 
@@ -22,14 +25,19 @@ __copyright__ = "Jayaram Kancherla"
 __license__ = "MIT"
 
 
-class DNAString:
+class DNAString(ut.BiocObject):
     """A string container for a DNA sequence, similar to Bioconductor's DNAString.
 
     This class stores the sequence internally as bytes, enforcing the
     DNA alphabet.
     """
 
-    def __init__(self, sequence: Union[str, bytes], metadata: Optional[dict] = None, validate: bool = True):
+    def __init__(
+        self,
+        sequence: Union[str, bytes],
+        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
+        _validate: bool = True,
+    ):
         """Create a DNAString.
 
         Args:
@@ -39,9 +47,11 @@ class DNAString:
             metadata:
                 Additional metadata. If None, defaults to an empty dictionary.
 
-            validate:
+            _validate:
                 Whether to validate the arguments, internal use only.
         """
+        super().__init__(metadata=metadata, _validate=_validate)
+
         if isinstance(sequence, str):
             self._data = sequence.upper().encode("ascii")
         elif isinstance(sequence, bytes):
@@ -51,7 +61,7 @@ class DNAString:
 
         self._metadata = _sanitize_metadata(metadata)
 
-        if validate:
+        if _validate:
             if not _DNA_VALIDATOR.match(self._data.decode("ascii")):
                 raise ValueError("Input string contains non-DNA characters.")
 
@@ -59,13 +69,7 @@ class DNAString:
     #### Copying ####
     #################
 
-    def _define_output(self, in_place):
-        if in_place:
-            return self
-        else:
-            return self.__copy__()
-
-    def __copy__(self) -> "DNAString":
+    def __copy__(self) -> DNAString:
         """Shallow copy of the object.
 
         Returns:
@@ -74,10 +78,10 @@ class DNAString:
         return type(self)(
             sequence=str(self),
             metadata=self._metadata,
-            validate=False,
+            _validate=False,
         )
 
-    def __deepcopy__(self, memo) -> "DNAString":
+    def __deepcopy__(self, memo) -> DNAString:
         """Deep copy of the object.
 
         Args:
@@ -89,62 +93,12 @@ class DNAString:
         return type(self)(
             sequence=deepcopy(str(self), memo),
             metadata=deepcopy(self._metadata, memo),
-            validate=False,
+            _validate=False,
         )
 
     ########################
     #### Getter/setters ####
     ########################
-
-    def get_metadata(self) -> dict:
-        """Get additional metadata.
-
-        Returns:
-            Dictionary containing additional metadata.
-        """
-        return self._metadata
-
-    def set_metadata(self, metadata: Optional[dict], in_place: bool = False) -> "DNAString":
-        """Set or replace metadata.
-
-        Args:
-            metadata:
-                Additional metadata.
-
-            in_place:
-                Whether to modify the object in place.
-
-        Returns:
-            If ``in_place = False``, a new ``DNAString`` is returned with the
-            modified metadata. Otherwise, the current object is directly
-            modified and a reference to it is returned.
-        """
-        output = self._define_output(in_place)
-        output._metadata = _sanitize_metadata(metadata)
-        return output
-
-    @property
-    def metadata(self) -> dict:
-        """Get additional metadata.
-
-        Returns:
-            Dictionary containing additional metadata.
-        """
-        return self.get_metadata()
-
-    @metadata.setter
-    def metadata(self, metadata: Optional[dict]):
-        """Set or replace metadata (in-place operation).
-
-        Args:
-            metadata:
-                Additional metadata.
-        """
-        warn(
-            "Setting property 'metadata'is an in-place operation, use 'set_metadata' instead",
-            UserWarning,
-        )
-        self.set_metadata(metadata, in_place=True)
 
     def get_sequence(self) -> str:
         """Get the sequence.
@@ -191,7 +145,7 @@ class DNAString:
     #### Getitem/setitem ####
     #########################
 
-    def __getitem__(self, key: Union[int, slice]) -> "DNAString":
+    def __getitem__(self, key: Union[int, slice]) -> DNAString:
         """Extract a subsequence (slicing).
 
         Args:
@@ -214,7 +168,7 @@ class DNAString:
     #### methods ####
     #################
 
-    def reverse_complement(self) -> "DNAString":
+    def reverse_complement(self) -> DNAString:
         """Compute the reverse complement of the sequence.
 
         Returns:

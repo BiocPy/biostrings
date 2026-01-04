@@ -27,7 +27,7 @@ def sample_set(sample_seqs):
 
 def test_construction(sample_set, sample_seqs):
     assert len(sample_set) == 5
-    assert sample_set.names == sample_seqs["names"]
+    assert list(sample_set.names) == sample_seqs["names"]
     assert np.array_equal(sample_set.width(), [4, 7, 0, 13, 8])
 
 
@@ -49,7 +49,7 @@ def test_construction_empty():
 def test_names_setter(sample_set):
     new_names = ["a", "b", "c", "d", "e"]
     sample_set.names = new_names
-    assert sample_set.names == new_names
+    assert list(sample_set.names) == new_names
 
     with pytest.raises(Exception):
         sample_set.names = ["a", "b"]
@@ -72,7 +72,7 @@ def test_getitem_slice_view(sample_set):
     subset = sample_set[1:4]
     assert isinstance(subset, DNAStringSet)
     assert len(subset) == 3
-    assert subset.names == ["seq2", "empty", "iupac"]
+    assert list(subset.names) == ["seq2", "empty", "iupac"]
     assert np.array_equal(subset.width(), [7, 0, 13])
 
     # Test it's a view (shares the pool)
@@ -85,7 +85,7 @@ def test_getitem_list_view(sample_set):
 
     assert isinstance(subset, DNAStringSet)
     assert len(subset) == 3
-    assert subset.names == ["seq1", "iupac", "seq5"]
+    assert list(subset.names) == ["seq1", "iupac", "seq5"]
     assert np.array_equal(subset.width(), [4, 13, 8])
 
     # Test it's a view
