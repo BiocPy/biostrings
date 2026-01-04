@@ -3,7 +3,6 @@ from __future__ import annotations
 import re
 from copy import deepcopy
 from typing import Any, Dict, Optional, Union
-from warnings import warn
 
 import biocutils as ut
 
