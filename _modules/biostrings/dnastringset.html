@@ -4,11 +4,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.12.19 -->
-        <title>biostrings.dnastringset - biostrings 0.0.2 documentation</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>biostrings.dnastringset - biostrings 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">biostrings 0.0.2 documentation</div></a>
+      <a href="../../index.html"><div class="brand">biostrings 0.0.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">biostrings 0.0.2 documentation</span>
+  <span class="sidebar-brand-text">biostrings 0.0.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -255,21 +255,21 @@
     <span class="kn">from</span><span class="w"> </span><span class="nn">.dnastring</span><span class="w"> </span><span class="kn">import</span> <span class="n">_DNA_VALIDATOR</span>
 
 
-<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Jayaram Kancherla&quot;</span>
-<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;Jayaram Kancherla&quot;</span>
-<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">"Jayaram Kancherla"</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">"Jayaram Kancherla"</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">"MIT"</span>
 
 
 <div class="viewcode-block" id="DNAStringSet">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DNAStringSet</span><span class="p">(</span><span class="n">ut</span><span class="o">.</span><span class="n">BiocObject</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;A collection of DNA sequences, similar to Bioconductor&#39;s DNAStringSet.</span>
+<span class="w">    </span><span class="sd">"""A collection of DNA sequences, similar to Bioconductor's DNAStringSet.</span>
 
-<span class="sd">    This class follows the &quot;pool and ranges&quot; model for high memory</span>
-<span class="sd">    efficiency. All sequences are stored in a single concatenated &#39;bytes&#39; object (the pool).</span>
+<span class="sd">    This class follows the "pool and ranges" model for high memory</span>
+<span class="sd">    efficiency. All sequences are stored in a single concatenated 'bytes' object (the pool).</span>
 
-<span class="sd">    An &#39;IRanges&#39; object tracks the start and width of each sequence in the pool.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    An 'IRanges' object tracks the start and width of each sequence in the pool.</span>
+<span class="sd">    """</span>
 
 <div class="viewcode-block" id="DNAStringSet.__init__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__init__">[docs]</a>
@@ -282,7 +282,7 @@
         <span class="n">metadata</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">ut</span><span class="o">.</span><span class="n">NamedList</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">_validate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a DNAStringSet.</span>
+<span class="w">        </span><span class="sd">"""Create a DNAStringSet.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            sequences:</span>
@@ -303,7 +303,7 @@
 
 <span class="sd">            validate:</span>
 <span class="sd">                Whether to validate the arguments, internal use only.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span> <span class="n">_validate</span><span class="o">=</span><span class="n">_validate</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">_pool</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_ranges</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -314,7 +314,7 @@
             <span class="k">if</span> <span class="n">_validate</span><span class="p">:</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seq_str</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sequences</span><span class="p">):</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="n">_DNA_VALIDATOR</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">seq_str</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sequence at index </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> contains non-DNA characters.&quot;</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Sequence at index </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> contains non-DNA characters."</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">_CPP_OPS_ENABLED</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -327,18 +327,18 @@
                 <span class="n">widths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sequences</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
 
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">seq_str</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sequences</span><span class="p">):</span>
-                    <span class="n">seq_bytes</span> <span class="o">=</span> <span class="n">seq_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+                    <span class="n">seq_bytes</span> <span class="o">=</span> <span class="n">seq_str</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span>
                     <span class="n">pool_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">seq_bytes</span><span class="p">)</span>
                     <span class="n">widths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq_bytes</span><span class="p">)</span>
 
-                <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pool_parts</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pool_parts</span><span class="p">)</span>
                 <span class="n">starts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">widths</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])))</span>
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span> <span class="o">=</span> <span class="n">IRanges</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="n">starts</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">widths</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Empty set</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">&quot;&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span> <span class="o">=</span> <span class="sa">b</span><span class="s2">""</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span> <span class="o">=</span> <span class="n">IRanges</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="p">[])</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_metadata</span> <span class="o">=</span> <span class="n">_sanitize_metadata</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span></div>
@@ -351,11 +351,11 @@
 <div class="viewcode-block" id="DNAStringSet.__copy__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__copy__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DNAStringSet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Shallow copy of the object.</span>
+<span class="w">        </span><span class="sd">"""Shallow copy of the object.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Same type as the caller, a shallow copy of this object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
             <span class="n">_pool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">,</span>
             <span class="n">_ranges</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">,</span>
@@ -367,14 +367,14 @@
 <div class="viewcode-block" id="DNAStringSet.__deepcopy__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__deepcopy__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DNAStringSet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Deep copy of the object.</span>
+<span class="w">        </span><span class="sd">"""Deep copy of the object.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            memo: Passed to internal :py:meth:`~deepcopy` calls.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            Same type as the caller, a deep copy of this object.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span>
             <span class="n">_pool</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
             <span class="n">_ranges</span><span class="o">=</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">,</span> <span class="n">memo</span><span class="p">),</span>
@@ -390,19 +390,19 @@
 <div class="viewcode-block" id="DNAStringSet.get_names">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.get_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ut</span><span class="o">.</span><span class="n">Names</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get range names.</span>
+<span class="w">        </span><span class="sd">"""Get range names.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            List containing the names for all ranges, or None if no names are</span>
 <span class="sd">            present.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">get_names</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.set_names">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.set_names">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">set_names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span> <span class="n">in_place</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DNAStringSet</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Args:</span>
 <span class="sd">            names:</span>
 <span class="sd">                Sequence of names or None, see the constructor for details.</span>
@@ -414,7 +414,7 @@
 <span class="sd">            If ``in_place = False``, a new ``DNAStringSet`` is returned with the</span>
 <span class="sd">            modified names. Otherwise, the current object is directly modified</span>
 <span class="sd">            and a reference to it is returned.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_define_output</span><span class="p">(</span><span class="n">in_place</span><span class="p">)</span>
         <span class="n">output</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">set_names</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="n">in_place</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">output</span></div>
@@ -422,14 +422,14 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ut</span><span class="o">.</span><span class="n">Names</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the names of the sequences.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the names of the sequences."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">get_names</span><span class="p">()</span>
 
     <span class="nd">@names</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the names of the sequences.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Set the names of the sequences."""</span>
         <span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;Setting property &#39;names&#39; is an in-place operation, use &#39;set_names&#39; instead&quot;</span><span class="p">,</span>
+            <span class="s2">"Setting property 'names' is an in-place operation, use 'set_names' instead"</span><span class="p">,</span>
             <span class="ne">UserWarning</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_names</span><span class="p">(</span><span class="n">names</span><span class="o">=</span><span class="n">new_names</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -441,21 +441,21 @@
 <div class="viewcode-block" id="DNAStringSet.__repr__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__repr__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a compact representation.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return a compact representation."""</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">cls_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span>
 
         <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2"> of length 0&gt;&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"&lt;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2"> of length 0&gt;"</span>
 
-        <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&lt;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2"> of length </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&gt;&quot;</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"&lt;</span><span class="si">{</span><span class="n">cls_name</span><span class="si">}</span><span class="s2"> of length </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">&gt;"</span>
 
         <span class="n">max_show</span> <span class="o">=</span> <span class="mi">10</span>
         <span class="n">half_show</span> <span class="o">=</span> <span class="mi">5</span>
 
         <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">widths</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">()</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">else</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">names</span> <span class="k">else</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="o">*</span> <span class="n">n</span>
         <span class="n">max_width_str</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">widths</span><span class="p">)))</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">widths</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">format_line</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
@@ -467,15 +467,15 @@
             <span class="n">seq_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">w</span> <span class="o">&gt;</span> <span class="mi">18</span><span class="p">:</span>
-                <span class="n">snippet</span> <span class="o">=</span> <span class="n">seq_bytes</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span> <span class="o">+</span> <span class="n">seq_bytes</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+                <span class="n">snippet</span> <span class="o">=</span> <span class="n">seq_bytes</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span> <span class="o">+</span> <span class="s2">"..."</span> <span class="o">+</span> <span class="n">seq_bytes</span><span class="p">[</span><span class="o">-</span><span class="mi">8</span><span class="p">:]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">snippet</span> <span class="o">=</span> <span class="n">seq_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span>
+                <span class="n">snippet</span> <span class="o">=</span> <span class="n">seq_bytes</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span>
 
-            <span class="n">name_str</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+            <span class="n">name_str</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="s2">""</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name_str</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
-                <span class="n">name_str</span> <span class="o">=</span> <span class="n">name_str</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;...&quot;</span>
+                <span class="n">name_str</span> <span class="o">=</span> <span class="n">name_str</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"..."</span>
 
-            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;  [</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">max_width_str</span><span class="si">}</span><span class="s2">d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">snippet</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name_str</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">"  [</span><span class="si">{</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">] </span><span class="si">{</span><span class="n">w</span><span class="si">:</span><span class="s2">&gt;</span><span class="si">{</span><span class="n">max_width_str</span><span class="si">}</span><span class="s2">d</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">snippet</span><span class="si">:</span><span class="s2">&lt;20</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name_str</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;=</span> <span class="n">max_show</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
@@ -483,11 +483,11 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">half_show</span><span class="p">):</span>
                 <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_line</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ... </span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">half_show</span><span class="p">)</span><span class="si">}</span><span class="s2"> more sequences ...&quot;</span><span class="p">)</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  ... </span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">half_show</span><span class="p">)</span><span class="si">}</span><span class="s2"> more sequences ..."</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">half_show</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
                 <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">format_line</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">header</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">header</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
 
 
     <span class="c1">##################</span>
@@ -497,28 +497,28 @@
 <div class="viewcode-block" id="DNAStringSet.__len__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__len__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return the number of sequences in the set.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return the number of sequences in the set."""</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.get_width">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.get_width">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">get_width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return an array of lengths for all sequences.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Return an array of lengths for all sequences."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.width">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.width">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">width</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Alias to :py:meth:`~.get_width`.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Alias to :py:meth:`~.get_width`."""</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.__getitem__">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.__getitem__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">slice</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DNAString</span><span class="p">,</span> <span class="n">DNAStringSet</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract one or more sequences.</span>
+<span class="w">        </span><span class="sd">"""Extract one or more sequences.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            key:</span>
@@ -527,7 +527,7 @@
 
 <span class="sd">        Returns:</span>
 <span class="sd">            A DNAString or DNAStringSet object representing the slice.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="n">key</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -542,28 +542,28 @@
             <span class="n">new_ranges</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
             <span class="k">return</span> <span class="n">DNAStringSet</span><span class="p">(</span><span class="n">sequences</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_pool</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">,</span> <span class="n">_ranges</span><span class="o">=</span><span class="n">new_ranges</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Index must be int, slice, or list, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Index must be int, slice, or list, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.to_list">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.to_list">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">to_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert the set to a list of Python strings.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Convert the set to a list of Python strings."""</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="p">)):</span>
             <span class="n">start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">_start</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">width</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">_width</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">end</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="n">width</span>
-            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">))</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
 
 <div class="viewcode-block" id="DNAStringSet.unlist">
 <a class="viewcode-back" href="../../api/biostrings.html#biostrings.dnastringset.DNAStringSet.unlist">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">unlist</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DNAString</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Concatenate all sequences in the set into one DNAString.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Concatenate all sequences in the set into one DNAString."""</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">DNAString</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">DNAString</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
         <span class="n">first_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">_start</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">last_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ranges</span><span class="o">.</span><span class="n">_start</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -575,7 +575,7 @@
         <span class="k">if</span> <span class="n">last_end</span> <span class="o">-</span> <span class="n">first_start</span> <span class="o">==</span> <span class="n">total_width</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">DNAString</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">first_start</span><span class="p">:</span><span class="n">last_end</span><span class="p">])</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">DNAString</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_list</span><span class="p">()]))</span></div>
+            <span class="k">return</span> <span class="n">DNAString</span><span class="p">(</span><span class="sa">b</span><span class="s2">""</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">x</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">"ascii"</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_list</span><span class="p">()]))</span></div>
 </div>
 
 </pre></div>
@@ -610,9 +610,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=e3a6060d"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>
