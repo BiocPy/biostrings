@@ -12,7 +12,7 @@ def sample_seqs():
             "ACGT",
             "GATTACA",
             "",
-            "TTGAAAA-CTC-N",  #
+            "TTGAAAA-CTC-N",
             "ACGTACGT",
         ],
         "names": ["seq1", "seq2", "empty", "iupac", "seq5"],
