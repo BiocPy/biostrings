@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
-from typing import Any, Dict, List, Optional, Union
+from typing import Any
 from warnings import warn
 
 import biocutils as ut
@@ -36,11 +36,11 @@ class DNAStringSet(ut.BiocObject):
 
     def __init__(
         self,
-        sequences: Optional[List[str]] = None,
-        names: Optional[Union[List[str], ut.Names]] = None,
-        _pool: Optional[bytes] = None,
-        _ranges: Optional[IRanges] = None,
-        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
+        sequences: list[str] | None = None,
+        names: list[str] | ut.Names | None = None,
+        _pool: bytes | None = None,
+        _ranges: IRanges | None = None,
+        metadata: dict[str, Any] | ut.NamedList | None = None,
         _validate: bool = True,
     ):
         """Create a DNAStringSet.
@@ -141,7 +141,7 @@ class DNAStringSet(ut.BiocObject):
     #### Getter/setters ####
     ########################
 
-    def get_names(self) -> Optional[ut.Names]:
+    def get_names(self) -> ut.Names | None:
         """Get range names.
 
         Returns:
@@ -150,7 +150,7 @@ class DNAStringSet(ut.BiocObject):
         """
         return self._ranges.get_names()
 
-    def set_names(self, names: Optional[List[str]], in_place: bool = False) -> DNAStringSet:
+    def set_names(self, names: list[str] | None, in_place: bool = False) -> DNAStringSet:
         """
         Args:
             names:
@@ -169,12 +169,12 @@ class DNAStringSet(ut.BiocObject):
         return output
 
     @property
-    def names(self) -> Optional[ut.Names]:
+    def names(self) -> ut.Names | None:
         """Return the names of the sequences."""
         return self._ranges.get_names()
 
     @names.setter
-    def names(self, new_names: List[str]):
+    def names(self, new_names: list[str]):
         """Set the names of the sequences."""
         warn(
             "Setting property 'names' is an in-place operation, use 'set_names' instead",
@@ -251,7 +251,7 @@ class DNAStringSet(ut.BiocObject):
         """Alias to :py:meth:`~.get_width`."""
         return self.get_width()
 
-    def __getitem__(self, key: Union[int, slice, List[int], np.ndarray]) -> Union[DNAString, DNAStringSet]:
+    def __getitem__(self, key: int | slice | list[int] | np.ndarray) -> DNAString | DNAStringSet:
         """Extract one or more sequences.
 
         Args:
@@ -278,7 +278,7 @@ class DNAStringSet(ut.BiocObject):
         else:
             raise TypeError(f"Index must be int, slice, or list, not {type(key)}")
 
-    def to_list(self) -> List[str]:
+    def to_list(self) -> list[str]:
         """Convert the set to a list of Python strings."""
         output = []
         for i in range(len(self._ranges)):
