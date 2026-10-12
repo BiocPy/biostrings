@@ -34,8 +34,8 @@ print(dna)
 # Output: TTGAAAA-CTC-N
 
 # Basic operations
-print(len(dna))            # 13
-print(dna[0:3])            # DnaString(length=3, sequence='TTG')
+print(len(dna))  # 13
+print(dna[0:3])  # DnaString(length=3, sequence='TTG')
 
 # Reverse Complement
 # Handles IUPAC ambiguity codes correctly (e.g., N -> N, M -> K)
@@ -52,12 +52,7 @@ The `DNAStringSet` is the primary container for handling collections of sequence
 from biostrings import DNAStringSet
 
 # Efficiently create a set from a list of strings
-seqs = [
-    "ACGT",
-    "GATTACA",
-    "TTGAAAA-CTC-N",
-    "ACGTACGT"
-]
+seqs = ["ACGT", "GATTACA", "TTGAAAA-CTC-N", "ACGTACGT"]
 dss = DNAStringSet(seqs, names=["s1", "s2", "s3", "s4"])
 
 print(dss)
