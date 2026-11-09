@@ -84,7 +84,6 @@ def test_reverse_complement_simple():
 
 
 def test_reverse_complement_iupac():
-    #
     dna = DNAString("ACGTRYSWKMBDHVN-")
     rc = dna.reverse_complement()
     # From our complement table
