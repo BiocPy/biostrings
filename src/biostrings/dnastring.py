@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import re
 from copy import deepcopy
-from typing import Any, Dict, Optional, Union
+from typing import Any
 
 import biocutils as ut
 
@@ -34,8 +34,8 @@ class DNAString(ut.BiocObject):
 
     def __init__(
         self,
-        sequence: Union[str, bytes],
-        metadata: Optional[Union[Dict[str, Any], ut.NamedList]] = None,
+        sequence: str | bytes,
+        metadata: dict[str, Any] | ut.NamedList | None = None,
         _validate: bool = True,
     ):
         """Create a DNAString.
@@ -145,7 +145,7 @@ class DNAString(ut.BiocObject):
     #### Getitem/setitem ####
     #########################
 
-    def __getitem__(self, key: Union[int, slice]) -> DNAString:
+    def __getitem__(self, key: int | slice) -> DNAString:
         """Extract a subsequence (slicing).
 
         Args:
